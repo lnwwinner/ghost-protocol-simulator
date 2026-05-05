@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ghost Protocol v2</title>
+<style>body{margin:0;background:black;color:#00ff9f;font-family:monospace;overflow:hidden}#ui{display:flex;height:100vh}#left{width:70%;padding:10px}#right{width:30%;background:#050505;padding:10px;border-left:1px solid #00ff9f33}.panel{margin-bottom:15px}.title{color:#00ffaa;margin-bottom:5px}#terminal{height:40%;overflow:auto;border:1px solid #00ff9f33;padding:5px}#network{height:40%}canvas{width:100%;height:100%;background:black}button{background:#00ff9f22;color:#00ff9f;border:1px solid #00ff9f55;padding:5px;cursor:pointer}</style>
+</head>
+<body>
+<div id="ui"><div id="left"><div class="panel"><div class="title">TERMINAL</div><div id="terminal"></div></div><div class="panel" id="network"><canvas id="netCanvas"></canvas></div><button onclick="runScenario()">🎬 START SCENE</button></div><div id="right"><div class="panel"><div class="title">AI ENGINE</div><div>Model: DeepGhost v2</div><div>Confidence: <span id="ai">85%</span></div><div>Threat: <span style="color:red">HIGH</span></div></div></div></div>
+<audio id="typing" src="https://www.soundjay.com/mechanical/keyboard-1.mp3"></audio>
+<script>
+const term=document.getElementById("terminal");const ai=document.getElementById("ai");function log(t){const d=document.createElement("div");d.textContent=t;term.appendChild(d);term.scrollTop=term.scrollHeight}function sleep(ms){return new Promise(r=>setTimeout(r,ms))}function rand(a,b){return Math.random()*(b-a)+a}async function type(c){const a=document.getElementById("typing");a.currentTime=0;a.play();log("> "+c)}async function runScenario(){await type("scan 192.168.1.0/24");await sleep(rand(800,1500));log("Found 6 devices");await type("exploit gateway");await sleep(rand(1000,2000));log("Access granted");await type("pivot internal");await sleep(rand(800,1500));log("Routing traffic...");await type("decrypt mainframe");decrypt()}function decrypt(){let p=0;const i=setInterval(()=>{p+=Math.random()*5;log("Decrypting... "+Math.floor(p)+"%");if(p>=100){log("ACCESS TOKEN: GRANTED");clearInterval(i)}},300)}setInterval(()=>{ai.textContent=Math.floor(80+Math.random()*15)+"%"},2000);const canvas=document.getElementById("netCanvas");const ctx=canvas.getContext("2d");canvas.width=window.innerWidth*0.7;canvas.height=300;let nodes=[{x:100,y:100},{x:300,y:50},{x:500,y:120},{x:200,y:200},{x:400,y:220}];function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);nodes.forEach(n=>{ctx.fillStyle="#00ff9f";ctx.beginPath();ctx.arc(n.x,n.y,5,0,Math.PI*2);ctx.fill()});let a=nodes[Math.floor(Math.random()*nodes.length)];let b=nodes[Math.floor(Math.random()*nodes.length)];ctx.strokeStyle="#ff3366";ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke()}setInterval(draw,500);
+</script>
+</body>
+</html>
