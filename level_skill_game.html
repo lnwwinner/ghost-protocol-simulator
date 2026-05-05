@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ghost Protocol - Level System</title>
+<style>
+body{background:black;color:#00ff9f;font-family:monospace;text-align:center}
+#bar{width:300px;height:20px;border:1px solid #00ff9f;margin:20px auto}
+#fill{height:100%;width:0;background:#00ff9f}
+#traceBar{width:300px;height:15px;border:1px solid red;margin:10px auto}
+#traceFill{height:100%;width:0;background:red}
+button{padding:10px;margin:5px;background:black;color:#00ff9f;border:1px solid #00ff9f}
+</style>
+</head>
+<body>
+<h2 id="mission">MISSION: LEVEL 1</h2>
+<p>Hit green zone to hack</p>
+
+<div id="bar"><div id="fill"></div></div>
+<div id="traceBar"><div id="traceFill"></div></div>
+
+<button onclick="hack()">EXECUTE</button>
+
+<h3>SKILLS</h3>
+<button onclick="upgrade('focus')">+ Focus (เพิ่มช่วงง่าย)</button>
+<button onclick="upgrade('stealth')">+ Stealth (ลด trace)</button>
+
+<p id="status"></p>
+
+<script>
+let pos=0,dir=1;
+let trace=0;
+let level=1;
+let success=0;
+
+let focus=10; // เพิ่มช่วงตีง่าย
+let stealth=0;
+
+const fill=document.getElementById("fill");
+const traceFill=document.getElementById("traceFill");
+
+setInterval(()=>{
+ pos+=dir*(2+level);
+ if(pos>100||pos<0)dir*=-1;
+ fill.style.width=pos+"%";
+},50);
+
+function updateTrace(){
+ traceFill.style.width=trace+"%";
+ if(trace>=100){
+   document.getElementById("status").textContent="💀 GAME OVER";
+ }
+}
+
+function hack(){
+ if(trace>=100) return;
+
+ let min=50-focus;
+ let max=50+focus;
+
+ if(pos>min && pos<max){
+   success++;
+   document.getElementById("status").textContent="✅ SUCCESS ("+success+")";
+   trace -= (5+stealth);
+ }else{
+   document.getElementById("status").textContent="❌ FAILED";
+   trace += 15;
+ }
+
+ if(trace<0) trace=0;
+ if(trace>100) trace=100;
+
+ updateTrace();
+
+ if(success>=5){
+   level++;
+   success=0;
+   document.getElementById("mission").textContent="MISSION: LEVEL "+level;
+ }
+}
+
+function upgrade(type){
+ if(type==='focus') focus+=5;
+ if(type==='stealth') stealth+=2;
+}
+</script>
+</body>
+</html>
