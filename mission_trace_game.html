@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ghost Protocol - Mission</title>
+<style>
+body{background:black;color:#00ff9f;font-family:monospace;text-align:center}
+#bar{width:300px;height:20px;border:1px solid #00ff9f;margin:20px auto}
+#fill{height:100%;width:0;background:#00ff9f}
+#traceBar{width:300px;height:15px;border:1px solid red;margin:10px auto}
+#traceFill{height:100%;width:0;background:red}
+button{padding:10px;margin:10px;background:black;color:#00ff9f;border:1px solid #00ff9f}
+</style>
+</head>
+<body>
+<h1>MISSION: INFILTRATE SERVER</h1>
+<p>Hit the green zone to hack successfully</p>
+
+<div id="bar"><div id="fill"></div></div>
+<div id="traceBar"><div id="traceFill"></div></div>
+
+<button onclick="hack()">EXECUTE</button>
+<p id="status"></p>
+
+<script>
+let pos=0,dir=1;
+let trace=0;
+const fill=document.getElementById("fill");
+const traceFill=document.getElementById("traceFill");
+
+setInterval(()=>{
+ pos+=dir*2;
+ if(pos>100||pos<0)dir*=-1;
+ fill.style.width=pos+"%";
+},50);
+
+function updateTrace(){
+ traceFill.style.width=trace+"%";
+ if(trace>=100){
+   document.getElementById("status").textContent="🚨 TRACE COMPLETE - GAME OVER";
+ }
+}
+
+function hack(){
+ if(trace>=100) return;
+
+ if(pos>40 && pos<60){
+   document.getElementById("status").textContent="✅ SUCCESS";
+   trace -= 5;
+ }else{
+   document.getElementById("status").textContent="❌ FAILED";
+   trace += 15;
+ }
+
+ if(trace<0) trace=0;
+ if(trace>100) trace=100;
+
+ updateTrace();
+}
+</script>
+</body>
+</html>
