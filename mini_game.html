@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mini Hack Game</title>
+<style>
+body{background:black;color:#00ff9f;font-family:monospace;text-align:center}
+#bar{width:300px;height:20px;border:1px solid #00ff9f;margin:20px auto}
+#fill{height:100%;width:0;background:#00ff9f}
+button{padding:10px;margin:10px;background:black;color:#00ff9f;border:1px solid #00ff9f}
+</style>
+</head>
+<body>
+<h1>HACK TERMINAL</h1>
+<p>Click when bar is in GREEN zone!</p>
+<div id="bar"><div id="fill"></div></div>
+<button onclick="hack()">EXECUTE</button>
+<p id="status"></p>
+
+<script>
+let pos=0,dir=1;
+const fill=document.getElementById("fill");
+setInterval(()=>{
+ pos+=dir*2;
+ if(pos>100||pos<0)dir*=-1;
+ fill.style.width=pos+"%";
+},50);
+
+function hack(){
+ if(pos>40 && pos<60){
+   document.getElementById("status").textContent="SUCCESS";
+ }else{
+   document.getElementById("status").textContent="FAILED";
+ }
+}
+</script>
+</body>
+</html>
