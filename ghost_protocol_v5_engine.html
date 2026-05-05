@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Ghost Protocol V5 - Mission Engine</title>
+<style>
+body{margin:0;background:#000;color:#00ff9f;font-family:monospace}
+#ui{display:flex;height:100vh}
+#left{width:70%;padding:10px}
+#right{width:30%;padding:10px;border-left:1px solid #00ff9f33}
+#terminal{height:40%;overflow:auto;border:1px solid #00ff9f33;padding:5px}
+#bar{width:100%;height:20px;border:1px solid #00ff9f;margin-top:10px}
+#fill{height:100%;width:0;background:#00ff9f}
+#trace{width:100%;height:10px;border:1px solid red;margin-top:5px}
+#traceFill{height:100%;width:0;background:red}
+button{margin-top:10px;background:black;color:#00ff9f;border:1px solid #00ff9f}
+</style>
+</head>
+<body>
+<div id="ui">
+<div id="left">
+<div id="terminal"></div>
+<div id="bar"><div id="fill"></div></div>
+<div id="trace"><div id="traceFill"></div></div>
+<button onclick="hack()">EXECUTE</button>
+</div>
+<div id="right">
+<h3 id="mission">MISSION: Breach 3 Systems</h3>
+<p>Level: <span id="level">1</span></p>
+<p>EXP: <span id="exp">0</span></p>
+<p>Money: $<span id="money">0</span></p>
+<button onclick="upgrade('focus')">+ Focus</button>
+<button onclick="upgrade('stealth')">+ Stealth</button>
+</div>
+</div>
+<script>
+const term=document.getElementById('terminal');
+function log(t){let d=document.createElement('div');d.textContent=t;term.appendChild(d);term.scrollTop=term.scrollHeight}
+
+let pos=0,dir=1;
+let trace=0,level=1,success=0;
+let focus=10,stealth=0;
+let exp=0,money=0;
+let missionGoal=3;
+
+const fill=document.getElementById('fill');
+const traceFill=document.getElementById('traceFill');
+
+setInterval(()=>{
+ pos+=dir*(2+level);
+ if(pos>100||pos<0)dir*=-1;
+ fill.style.width=pos+'%';
+},50);
+
+function updateUI(){
+ document.getElementById('level').textContent=level;
+ document.getElementById('exp').textContent=exp;
+ document.getElementById('money').textContent=money;
+ traceFill.style.width=trace+'%';
+}
+
+function hack(){
+ if(trace>=100){log('💀 TRACE COMPLETE');return}
+ let min=50-focus;
+ let max=50+focus;
+
+ if(pos>min && pos<max){
+  success++;
+  exp+=10;
+  money+=50;
+  trace -= (5+stealth);
+  log('✅ Breach success');
+ }else{
+  trace += 15;
+  log('❌ Breach failed');
+ }
+
+ if(trace<0)trace=0;
+ if(trace>100)trace=100;
+
+ if(success>=missionGoal){
+  level++;
+  success=0;
+  missionGoal+=2;
+  log('🚀 MISSION COMPLETE → NEXT LEVEL');
+ }
+
+ updateUI();
+}
+
+function upgrade(t){
+ if(t==='focus') focus+=5;
+ if(t==='stealth') stealth+=2;
+ log('Upgrade applied: '+t);
+}
+
+log('Ghost Protocol V5 Initialized');
+</script>
+</body>
+</html>
